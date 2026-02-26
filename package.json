@@ -1,0 +1,10 @@
+{
+    "name": "stickerforge",
+    "version": "1.0.0",
+    "description": "AI-powered sticker generator for Telegram & WhatsApp, using Pollinations.ai",
+    "private": true,
+    "scripts": {
+        "dev": "npx -y serve .",
+        "start": "npx -y serve ."
+    }
+}

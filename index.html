@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StickerForge — AI Sticker Generator</title>
+    <meta name="description"
+        content="Generate custom AI stickers for Telegram and WhatsApp instantly. Powered by Pollinations.ai." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="StickerForge — AI Sticker Generator" />
+    <meta property="og:description" content="Generate custom AI stickers for Telegram and WhatsApp instantly." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo" id="logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">StickerForge</span>
+            </a>
+            <button class="settings-btn" id="settings-btn" aria-label="Settings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close" id="modal-close" aria-label="Close settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label class="setting-label" for="api-key-input">
+                        <span class="setting-label-icon">🔑</span>
+                        Pollinations API Key <span class="setting-optional">(optional)</span>
+                    </label>
+                    <p class="setting-description">Optionally enter your own Pollinations.ai API key to use your
+                        personal account. Leave empty to use the default server key.</p>
+                    <div class="api-key-wrapper">
+                        <input type="password" id="api-key-input" class="api-key-input"
+                            placeholder="pk-xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+                        <button class="api-key-toggle" id="api-key-toggle" aria-label="Toggle API key visibility">
+                            <svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="setting-hint">Get your API key at <a href="https://enter.pollinations.ai" target="_blank"
+                            rel="noopener">enter.pollinations.ai</a></p>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" for="model-select">
+                        <span class="setting-label-icon">🤖</span>
+                        AI Model
+                    </label>
+                    <select id="model-select" class="model-select">
+                        <option value="flux" selected>Flux (Default — High Quality)</option>
+                        <option value="turbo">Turbo (Faster)</option>
+                        <option value="gptimage">GPT Image</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="save-settings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Powered by Pollinations.ai
+            </div>
+            <h1 class="hero-title">
+                Create <span class="gradient-text">AI Stickers</span><br />
+                in Seconds
+            </h1>
+            <p class="hero-subtitle">
+                Generate custom stickers for Telegram & WhatsApp with AI.
+                Just describe what you want, pick a style, and download.
+            </p>
+        </section>
+
+        <!-- Generator Section -->
+        <section class="generator" id="generator">
+            <div class="generator-card">
+                <!-- Prompt Input -->
+                <div class="input-group">
+                    <label class="input-label" for="prompt-input">Describe your sticker</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="prompt-input" class="prompt-input"
+                            placeholder="e.g. a happy corgi wearing sunglasses, a dancing avocado, a grumpy cat with coffee..."
+                            maxlength="500" autocomplete="off" />
+                        <span class="char-count" id="char-count">0/500</span>
+                    </div>
+                </div>
+
+                <!-- Style Presets -->
+                <div class="styles-group">
+                    <label class="input-label">Choose a Style</label>
+                    <div class="style-grid" id="style-grid">
+                        <button class="style-chip active" data-style="kawaii">
+                            <span class="style-emoji">🌸</span>
+                            <span class="style-name">Kawaii</span>
+                        </button>
+                        <button class="style-chip" data-style="cartoon">
+                            <span class="style-emoji">🎨</span>
+                            <span class="style-name">Cartoon</span>
+                        </button>
+                        <button class="style-chip" data-style="3d">
+                            <span class="style-emoji">💎</span>
+                            <span class="style-name">3D Render</span>
+                        </button>
+                        <button class="style-chip" data-style="pixel">
+                            <span class="style-emoji">👾</span>
+                            <span class="style-name">Pixel Art</span>
+                        </button>
+                        <button class="style-chip" data-style="minimalist">
+                            <span class="style-emoji">✨</span>
+                            <span class="style-name">Minimalist</span>
+                        </button>
+                        <button class="style-chip" data-style="watercolor">
+                            <span class="style-emoji">🎭</span>
+                            <span class="style-name">Watercolor</span>
+                        </button>
+                        <button class="style-chip" data-style="retro">
+                            <span class="style-emoji">📼</span>
+                            <span class="style-name">Retro</span>
+                        </button>
+                        <button class="style-chip" data-style="emoji">
+                            <span class="style-emoji">😀</span>
+                            <span class="style-name">Emoji</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="btn btn-generate" id="generate-btn">
+                    <span class="btn-content">
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                        Generate Sticker
+                    </span>
+                    <span class="btn-loading">
+                        <span class="spinner"></span>
+                        Creating magic...
+                    </span>
+                </button>
+            </div>
+
+            <!-- Result Area -->
+            <div class="result-area" id="result-area">
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-illustration">
+                        <div class="floating-sticker s1">🦊</div>
+                        <div class="floating-sticker s2">🌟</div>
+                        <div class="floating-sticker s3">🎉</div>
+                        <div class="floating-sticker s4">🐱</div>
+                        <div class="floating-sticker s5">🦄</div>
+                    </div>
+                    <p class="empty-text">Your AI sticker will appear here</p>
+                    <p class="empty-subtext">Describe something fun and hit generate!</p>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state hidden" id="loading-state">
+                    <div class="sticker-skeleton">
+                        <div class="skeleton-shimmer"></div>
+                    </div>
+                    <p class="loading-text">Generating your sticker<span
+                            class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+                    <p class="loading-subtext">This usually takes 5–15 seconds</p>
+                </div>
+
+                <!-- Sticker Result -->
+                <div class="sticker-result hidden" id="sticker-result">
+                    <div class="sticker-frame">
+                        <img id="sticker-image" class="sticker-image" alt="Generated sticker" />
+                    </div>
+                    <div class="sticker-actions">
+                        <button class="btn btn-download" id="download-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Download PNG
+                        </button>
+                        <button class="btn btn-regenerate" id="regenerate-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            Regenerate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div class="error-state hidden" id="error-state">
+                    <div class="error-icon">⚠️</div>
+                    <p class="error-text" id="error-text">Something went wrong</p>
+                    <button class="btn btn-retry" id="retry-btn">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery-section">
+            <div class="gallery-header">
+                <h2 class="gallery-title">Your Stickers</h2>
+                <button class="btn btn-clear-gallery hidden" id="clear-gallery">Clear All</button>
+            </div>
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Gallery items will be inserted by JS -->
+            </div>
+            <div class="gallery-empty" id="gallery-empty">
+                <p>Your generated stickers will appear here</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Built with ❤️ using <a href="https://pollinations.ai" target="_blank" rel="noopener">Pollinations.ai</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
