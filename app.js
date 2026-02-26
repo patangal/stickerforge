@@ -98,10 +98,20 @@
         setupEventListeners();
     }
 
+    // Valid model values (keep in sync with index.html select)
+    const VALID_MODELS = ['flux', 'zimage', 'gptimage'];
+
     // ---- Settings ----
     function loadSettings() {
         const savedKey = localStorage.getItem(STORAGE_KEY_API_KEY) || '';
-        const savedModel = localStorage.getItem(STORAGE_KEY_MODEL) || 'flux';
+        let savedModel = localStorage.getItem(STORAGE_KEY_MODEL) || 'flux';
+
+        // Migrate legacy model values (e.g. 'turbo' was removed)
+        if (!VALID_MODELS.includes(savedModel)) {
+            savedModel = 'flux';
+            localStorage.setItem(STORAGE_KEY_MODEL, savedModel);
+        }
+
         els.apiKeyInput.value = savedKey;
         els.modelSelect.value = savedModel;
     }
@@ -116,7 +126,8 @@
     }
 
     function getModel() {
-        return localStorage.getItem(STORAGE_KEY_MODEL) || 'flux';
+        const model = localStorage.getItem(STORAGE_KEY_MODEL) || 'flux';
+        return VALID_MODELS.includes(model) ? model : 'flux';
     }
 
     // ---- Prompt Engineering ----
