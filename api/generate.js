@@ -60,16 +60,57 @@ export default async function handler(req, res) {
                 .raw()
                 .toBuffer();
 
-            // Threshold: any pixel whose R, G, B are all >= this value
-            // is considered "white background" and made transparent.
+            // ── Flood-fill from edges ───────────────────────────────────
+            // Only remove white pixels connected to the image border.
+            // Interior white (eyes, highlights, teeth, etc.) is preserved.
             const THRESHOLD = 240;
 
-            for (let i = 0; i < raw.length; i += 4) {
-                const r = raw[i];
-                const g = raw[i + 1];
-                const b = raw[i + 2];
-                if (r >= THRESHOLD && g >= THRESHOLD && b >= THRESHOLD) {
-                    raw[i + 3] = 0; // set alpha to 0 (transparent)
+            const isWhite = (idx) => {
+                return raw[idx] >= THRESHOLD
+                    && raw[idx + 1] >= THRESHOLD
+                    && raw[idx + 2] >= THRESHOLD;
+            };
+
+            const pixelIndex = (x, y) => (y * w + x) * 4;
+
+            // Track which pixels have been visited
+            const visited = new Uint8Array(w * h);
+
+            // BFS queue seeded with all border pixels that are white
+            const queue = [];
+
+            // Top & bottom rows
+            for (let x = 0; x < w; x++) {
+                if (isWhite(pixelIndex(x, 0))) { queue.push(x + 0 * w); visited[x + 0 * w] = 1; }
+                if (isWhite(pixelIndex(x, h - 1))) { queue.push(x + (h - 1) * w); visited[x + (h - 1) * w] = 1; }
+            }
+            // Left & right columns
+            for (let y = 0; y < h; y++) {
+                if (isWhite(pixelIndex(0, y))) { queue.push(0 + y * w); visited[0 + y * w] = 1; }
+                if (isWhite(pixelIndex(w - 1, y))) { queue.push((w - 1) + y * w); visited[(w - 1) + y * w] = 1; }
+            }
+
+            // BFS: spread inward through connected white pixels
+            const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            let head = 0;
+            while (head < queue.length) {
+                const pos = queue[head++];
+                const px = pos % w;
+                const py = (pos - px) / w;
+
+                // Make this pixel transparent
+                raw[pos * 4 + 3] = 0;
+
+                for (const [dx, dy] of dirs) {
+                    const nx = px + dx;
+                    const ny = py + dy;
+                    if (nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+                    const npos = nx + ny * w;
+                    if (visited[npos]) continue;
+                    visited[npos] = 1;
+                    if (isWhite(npos * 4)) {
+                        queue.push(npos);
+                    }
                 }
             }
 
